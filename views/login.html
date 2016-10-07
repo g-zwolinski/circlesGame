@@ -1,0 +1,60 @@
+<!doctype html>
+<html>
+<head>
+	<title>GoodQuality.Mockup</title>
+	<link rel="stylesheet" type="text/css" href="css/reset.css">
+	<link rel="stylesheet" type="text/css" href="css/structure.css">
+
+</head>
+<body>
+<form action="/login" method="post" class="box login">
+	<fieldset class="boxBody">
+
+		<label>Hello on GoodQuality.Mockup. Here will be description and nice logo. Use qwe/qwe if you don't want to make new account.
+		</label>
+		
+</fieldset>
+	<fieldset class="boxBody">
+	<% if (message.length > 0) { %>
+		<div class="alert alert-message"><%= message %></div>
+	<% } %>
+	  <label>Email</label>
+	  <input type="text" tabindex="1" placeholder="Enter Your Email Address" name="email" required>
+ 	<label>Password</label>
+	  <input type="password" tabindex="2"  name="password" required>
+	</fieldset>
+	<footer>
+	<input TYPE="button"class="btnLogin" value="SignUp"  onClick="parent.location='/signup'">
+	  <input type="submit" class="btnLogin" value="Login" tabindex="4">
+<!--
+	<a href="/auth/facebook" ><img src="images/f.jpg" height="10px"
+/> </a><a href="/auth/twitter" ><img src="images/t.jpg" height="30px"
+/> </a><a href="/auth/google" ><img src="images/g.jpg" height="30px"
+/> </a>
+-->
+<a tabindex="7" onclick="sendLoginToRememberPass()"><strong>Click here if you don't remember password. </a>
+	</footer>
+
+</form>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="http://128.199.61.130/socket.io/socket.io.js"></script>
+<!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+<script src="/js/bootbox.min.js"></script>
+<script type="text/javascript">
+var socket = io.connect('http://128.199.61.130/');
+
+function sendLoginToRememberPass(){
+		//socket.emit('deletePlayer', {nick: localPlayer.nick});
+	if(document.getElementById("email").value!=""){
+		var email = document.getElementById("email").value;
+		socket.emit('playerToRememberPass', {email: email});
+		bootbox.confirm('<div class="panel panel-info">  <div class="panel-heading">    <h3 class="panel-title">Hello on GoodQuality.Mockup.</h3>  </div>  <div class="panel-body"><div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>   Wait for email with new password.</div></div></div> ', function(result) {});
+	}else{
+		bootbox.confirm('<div class="panel panel-danger">  <div class="panel-heading">    <h3 class="panel-title">Hello on GoodQuality.Mockup.</h3>  </div>  <div class="panel-body"><div class="alert alert-warning" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>   Empty login. Can\'t send password.</div></div></div> ', function(result) {});
+	}
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,1219 @@
+<!doctype html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>GoodQuality.Mockup</title>
+
+	<link rel="stylesheet" href="/css/game.css">
+	<link rel="stylesheet" type="text/css" href="/css/bootstrap.min.css">
+	<?php   ?>
+</head>
+
+<body class="noselect">
+<div id="tools" align="left">
+
+<ul class="nav nav-tabs" style="background-color:white;">
+  <li><a>Hello <span id="nickToShow"><%= user.user.username %></span>.</a></li>
+  <li role="presentation" id="liStats" class="active"><a onclick="showStats()">Stats</a></li>
+  <li role="presentation" id="liShop"><a onclick="showShop()">Shop</a></li>
+  <li role="presentation" id="liParty"><a onclick="showParty()">Party</a></li>
+  <li role="presentation"><a onclick="showArrows()"><b><i><u>V</u></i></b>irtual keys</a></li>
+  <li role="presentation"><a onclick="showChat()"><b><i><u>C</u></i></b>hat</a></li>
+  <li role="presentation"><a onclick="showMinimap()"><b><i><u>M</u></i></b>inimap</a></li>
+  <li role="presentation"><a onclick="showPoint()">P<b><i><u>o</u></i></b>int</a></li>
+  <li role="presentation" id="liPlayers"><a onclick="showPlayers()">Players</a></li>
+  <li role="presentation"><a href="/logout" onclick="sendPlayerToDelete()">Log out</a></li>
+  <li role="presentation" style="position: absolute;right: 0%;top: 0%;"><a onclick="showTools()">X</a></li>
+
+</ul>
+<!--
+ 	<input type="button" id="guzikiTools1" id="" value="Stats"  onclick="showStats()">
+ 	<input type="button" id="guzikiTools2" id="" value="Shop" onclick="showShop()">
+ 	<input type="button" id="guzikiTools3" id="" value="Virtual keys" onclick="showArrows()">
+ 	<input type="button" id="guzikiTools4" id="" value="Chat" onclick="showChat()">
+ 	<input type="button" id="guzikiTools5" id="" value="Minimap"  onclick="showMinimap()">
+ 	<input type="button" id="guzikiTools6" id="" value="Point"  onclick="showPoint()">
+	<input type="button" id="guzikiTools7" id="" value="X" onclick="showTools()">
+-->
+<div id="players"></div>
+<div id="party" align="center">
+<input id="colorPartyPick"><input type="text" id="partyName" color="#000000" placeholder="Party name"><br>
+<input type="button" class="btn btn-default" value="Make Party" onclick="makeParty()"><input class="btn btn-default" type="button"   value="Leave Party" onclick="leaveParty()"><br>
+
+<input type="text" id="toInvite" placeholder="Player to invite" ><input class="btn btn-default" type="button" value="Invite" onclick="inviteToParty()"><br>
+
+Invitations:<br>
+<div id="invitations"></div>
+</div>
+
+<div id="stats" align="center">
+
+<label class="radio-inline"><input type="radio" id="classA" name="optradioClass" value="a" onclick="changeClass(this.value)">class A</label>
+<label class="radio-inline"><input type="radio" id="classB" name="optradioClass" value="b" onclick="changeClass(this.value)">class B</label>
+<label class="radio-inline"><input type="radio" id="classC" name="optradioClass" value="c" onclick="changeClass(this.value)">class C</label>
+
+<table class="table">
+      
+      <thead>
+        <tr>
+          <th><i>Attribute</i></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+      	<tr>
+          <th scope="row">Level</th>
+          <td>class A<span id="lvlToShowA"></span>&thinsp;(<span id="hitsToShowA"></span>&thinsp;hits), <span id="toNextLvla"></span></td>
+          <td>&nbsp;</td>
+           <td>class B<span id="lvlToShowB"></span>&thinsp;(<span id="hitsToShowB"></span>&thinsp;hits), <span id="toNextLvlb"></span></td>
+          <td>&nbsp;</td>
+           <td>class C<span id="lvlToShowC"></span>&thinsp;(<span id="hitsToShowC"></span>&thinsp;hits), <span id="toNextLvlc"></span></td>
+        </tr>
+        <tr>
+          <th scope="row">Amount1</th>
+          <td>class A<span id="a1aToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a1a_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a1a_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="a1bToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a1b_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a1b_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="a1cToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a1c_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a1c_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+          <th scope="row">Radius1</th>
+          <td>class A<span id="r1aToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r1a_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r1a_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="r1bToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r1b_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r1b_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="r1cToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r1c_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r1c_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+          <th scope="row">Amount2</th>
+          <td>class A<span id="a2aToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a2a_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a2a_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="a2bToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a2b_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a2b_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="a2cToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a2c_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a2c_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+          <th scope="row">Radius2</th>
+          <td>class A<span id="r2aToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r2a_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r2a_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="r2bToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r2b_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r2b_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="r2cToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r2c_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r2c_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+         <tr>
+          <th scope="row">Amount3</th>
+          <td>class A<span id="a3aToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a3a_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a3a_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="a3bToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a3b_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a3b_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="a3cToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="a3c_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="a3c_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+          <th scope="row">Radius3</th>
+          <td>class A<span id="r3aToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r3a_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r3a_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="r3bToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r3b_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r3b_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="r3cToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="r3c_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="r3c_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+		<tr>
+          <th scope="row">skillpoints</th>
+          <td>class A<span id="skillpointsToShowA"></span></td>
+          <td>&nbsp;</td>
+           <td>class B<span id="skillpointsToShowB"></span</td>
+          <td>&nbsp;</td>
+           <td>class C<span id="skillpointsToShowC"></span></td>
+        </tr>
+        <tr>
+          <th scope="row">STR</th>
+          <td>class A<span id="staToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="sta_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="sta_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="stbToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="stb_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="stb_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="stcToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="stc_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="stc_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+        <tr>
+          <th scope="row">DEX</th>
+          <td>class A<span id="deaToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="dea_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="dea_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="debToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="deb_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="deb_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="decToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="dec_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="dec_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+        <tr>
+          <th scope="row">SPD</th>
+          <td>class A<span id="pdaToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="pda_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="pda_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class B<span id="pdbToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="pdb_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="pdb_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+          <td>class C<span id="pdcToShow"></span></td>
+          <td>
+          	<input type="button" class="buttonDoStatsow" id="pdc_p" value="+" style=""  onclick="statsChanges(this.id)">
+          	<input type="button" class="buttonDoStatsow" id="pdc_m" value="-" style="" onclick="statsChanges(this.id)"></td>
+        </tr>
+        <tr>
+          <th scope="row">statspoints</th>
+          <td>class A<span id="statspointsToShowA"></span></td>
+          <td>&nbsp;</td>
+           <td>class B<span id="statspointsToShowB"></span></td>
+          <td>&nbsp;</td>
+           <td>class C<span id="statspointsToShowC"></span></td>
+        </tr>
+        <tr>
+          <th scope="row">Color</th>
+          <td align="center"><input id="colorPick"></td><td></td><td></td><td></td><td></td><td></td><td></td>
+          
+        </tr>
+      </tbody>
+    </table>
+
+<label class="radio-inline"><input type="radio" id="att1" name="optradio">Attack Type 1</label>
+<label class="radio-inline"><input type="radio" id="att2" name="optradio">Attack Type 2</label>
+<label class="radio-inline"><input type="radio" id="att3" name="optradio">Attack Type 3</label>
+
+
+	<div id="notifyB" style="display: none">
+		<div class="alert alert-info" role="alert">
+		  <span class="glyphicon glyphicon-hand-down" aria-hidden="true"></span>
+		  <span class="sr-only">Info:</span>
+		  <div id="notifyBonus"></div>
+		</div>
+	</div>
+	
+</div>
+
+<div id="shop" align="center"><br>
+<div class="alert alert-info" style="width: 100%" role="alert">Balance: 0.00000000 [12k4hg32lk5jb23tlkbdsvlkdsj4b5]</div>
+
+<table style="width: 100%;" align="center">
+<tr>
+	<td style="width: 50%;" align="center">
+
+	People selling:
+	<canvas id="offer1"></canvas>
+	50000.00000000 &nbsp; Boosts speed 10%
+
+	
+	
+	</td>
+	<td align="center">
+
+Your items:
+
+	<canvas id="offer2"></canvas>
+	<span style="">Description of selected item.</span>
+	
+	</td>
+
+
+</tr>
+</table><br>
+<table style="width: 100%;" align="center">
+<tr align="center">
+<td align="center" style="width:50%;">
+	<input type="button" id="prev" value="<<" style=""  onclick="">
+	<input type="button"  id="buyButton" value="BUY" style=""  onclick="">
+	<input type="button" id="next" value=">>" style=""  onclick=""></td>
+<td align="center">
+	<input type="button" id="prevR" value="<<" style=""  onclick="">
+	<input type="button" id="activeItem" value="Active this item" style=""  onclick="">
+	<input type="button" id="nextR" value=">>" style=""  onclick="">
+
+	
+	</td>
+</tr>
+<tr align="center">
+<td align="center" style="width:50%;">
+</td>
+<td align="center">
+<div style="width: 100%;">
+Activation of the selected item will turn off current active item (if exists).
+<div class="input-group" style="width: 90%;">
+      <input type="text" class="form-control" placeholder="Write price here.">
+      <span class="input-group-btn">
+        <button class="btn btn-default"type="button">Make sell offer</button>
+      </span>
+    </div>
+</div>
+	</td>
+</tr>
+</table>
+
+</div>
+</div>
+	<canvas id="hpbar"></canvas>
+	<canvas id="mpbar"></canvas>
+	<canvas id="mpbarLong"></canvas>
+	<canvas id="attackbar"></canvas>
+	<canvas id="attackbarLong"></canvas>
+	<canvas id="viewport"></canvas>
+	<canvas id="mapa"></canvas>
+
+	<div id="peopleInParty"><b><i><u>P</b></i></u>arty:<br></div>
+	<div id="items"><b><i><u>I</b></i></u>tems:</div>
+ 	<input type="button"  id="left" value="&lArr;"  onclick="">
+ 	<input type="button"  id="right" value="&rArr;" onclick="">
+ 	<input type="button"  id="up" value="&uArr;" onclick="">
+ 	<input type="button"  id="down" value="&dArr;" onclick="">
+ 
+ 	<div onclick="showTools()" id="toolsButton">
+ 		<button type="button" class="btn btn-primary btn-lg" style="width: 100%; height: 100%">
+		  <span class="glyphicon glyphicon-cog" aria-hidden="true"></span> <u><b><i>T</i></b></u>ools
+		</button>
+	</div>
+	<div id="chat">
+	<div id="wiadomosci"></div>
+
+	<div id="chatGuziki" align="center">
+		<input type="text" id="msgInput" value="" style="width: 90%"><input type="button"  id="s3" value="Send" id=""  style="width: 10%" onclick="sendChatMessage()">
+	</div>
+
+	<div id="vips">Vips:
+		<div class="input-group" style="width: 100%;">
+	      <input type="text" class="form-control" id="vip" placeholder="Nick">
+	      <span class="input-group-btn">
+	        <button class="btn btn-default"type="button" onclick="addOrRemoveVip()">+/-</button>
+	      </span>
+	    </div>
+		<div id="vipsToShow"></div>
+	</div>
+	</div>
+	
+	
+	<div id="footer">Copyright © 2015 Hr. All Rights Reserved.</div>
+	<div id="statystykiSerwera">
+	Up&nbsp;since&nbsp;<span id="odKiedyUp"></span>,&nbsp;Players&nbsp;online:&nbsp;<span id="playersAmount"></span>,&nbsp;Record:&nbsp;<span id="rekord"></span>
+	</div>
+</div>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="/js/bootstrap.min.js"></script>
+<script src="http://128.199.61.130/socket.io/socket.io.js"></script>
+<!-- <script src="https://cdn.socket.io/socket.io-1.2.0.js"></script> -->
+<script src="/js/bootbox.min.js"></script>
+<script src="/js/client.js"></script>
+<script src="/js/colorPicker.js"></script>
+<script src="/js/requestAnimationFrame.js"></script>
+<script>
+function changeClass (value){
+	localPlayer.klasa=value;
+	emitPlayer();
+}
+document.getElementById("players").style.display="none";
+document.getElementById("classA").checked=true;
+document.getElementById("att1").checked=true;
+function removeDOMElementById(id){
+	var d = document.getElementById("vipsToShow");
+	//var d_nested = document.getElementById("nested");
+	//var throwawayNode = d.removeChild(d_nested);
+	var node = document.getElementById(id);
+	if (node.parentNode) {
+		d.removeChild(node);
+		//bez podawania parenta: node.parentNode.removeChild(node);
+	}
+}
+function addOrRemoveVip(){
+	var vip = document.getElementById("vip").value;
+	var czyIstnieje = new Boolean (false);
+	if(vip!=localPlayer.nick){
+		for(var k in vips) {
+	    	if(vips[k].nick==vip){
+	    		removeDOMElementById(vip);
+	            delete vips[k];
+	            czyIstnieje=true;
+	            break;
+	        }
+	    }
+	    if(czyIstnieje==false){
+	    	vips[vip]={nick: vip, status: "off"};
+	    	//vips[vip].nick=vip;
+	    	//vips[vip].status="off";
+	    }
+	}
+	socket.emit('vipToSave', {nick: localPlayer.nick, vip: vips})
+}
+
+
+var xToShow= -1;
+var yToShow = -1;
+function addPartyTp(nick) {
+    var element = document.createElement("input");
+    //Assign different attributes to the element. 
+    element.type = "button";
+    element.value = nick;
+    element.className= "btn btn-default";
+    element.onclick = function() { // Note this is a function
+        localPlayer.x=allPlayers[nick].x;
+        localPlayer.y=allPlayers[nick].y;
+        emitPlayer();
+    };
+    element.onmouseover = function() { // Note this is a function
+        xToShow=allPlayers[nick].x;
+        yToShow=allPlayers[nick].y;
+    };
+    element.onmouseout = function() { // Note this is a function
+        xToShow=-1;
+        yToShow=-1;
+    };
+    var foo = document.getElementById("peopleInParty");
+    foo.appendChild(element);
+}
+function addInvitation(partyName) {
+    //Create an input type dynamically.   
+    var label = document.createElement("h3");
+    label.innerHTML= partyName;
+    var element = document.createElement("input");
+    //Assign different attributes to the element. 
+    element.type = "button";
+    element.value = "Accept";
+    element.className= "btn btn-default";
+    element.onclick = function() { // Note this is a function
+        acceptInvitation(partyName);
+    };
+    var elementB = document.createElement("input");
+    //Assign different attributes to the element. 
+    elementB.type = "button";
+    elementB.value = "Dismiss";
+    elementB.className= "btn btn-default";
+    elementB.onclick = function() { // Note this is a function
+        dismissInvitation(partyName);
+    };
+    var foo = document.getElementById("invitations");
+    //Append the element in page (in span).  
+    foo.appendChild(label);
+    foo.appendChild(element);
+    foo.appendChild(elementB);
+}
+//###########
+
+function acceptInvitation(partyName){
+	//console.log("a",partyName);
+	if(localPlayer.party==""){
+		localPlayer.party=partyName;
+		socket.emit('joinToParty', {partyName: partyName, player: localPlayer});
+	}else{
+		bootbox.alert('<div class="panel panel-danger">  <div class="panel-heading">    <h3 class="panel-title">Hello on GoodQuality.Mockup.</h3>  </div>  <div class="panel-body"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span> You are in party now.</div></div></div>', function(result) {
+		  //Example.show("Confirm result: "+result);
+		}); 
+	}
+	
+}
+function dismissInvitation(partyName){
+	//console.log("d",partyName);
+	socket.emit('dismissParty', {partyName: partyName, nick: localPlayer.nick});
+}
+function makeParty(){
+	if(localPlayer.party==""){
+		var partyColor = colorPartyPick.style.backgroundColor;
+		var partyName = document.getElementById("partyName").value;
+
+		socket.emit('makeParty', {partyName: partyName, partyColor: partyColor, player: localPlayer});
+	}
+	
+}
+function leaveParty(){
+	var partyName = document.getElementById("partyName").value;
+	localPlayer.party="";
+	socket.emit('leaveParty', {partyName: partyName, player: localPlayer});
+}
+function inviteToParty(){
+	if(localPlayer.party!=""){
+		var toInvite = document.getElementById("toInvite").value;
+		socket.emit('inviteToParty', {partyName: localPlayer.party, nick: toInvite});
+	}
+	
+}
+var promptedWarning=false;
+var socket = io.connect('http://128.199.61.130/');
+$('#colorPick').colorPicker(); // that's it
+$('#colorPartyPick').colorPicker(); // that's it
+var czasInicjacji = new Date();
+var id = "i" + Math.round(Math.random()*(100))+czasInicjacji.getTime();
+var person;
+var username;
+var password;
+var invitations = {};
+wyslijLogin();
+
+
+function sendPlayerToDelete(){
+	console.log("a");
+	socket.emit('deletePlayer', localPlayer);
+}
+function wyslijLogin(){
+	var personToSend = document.getElementById("nickToShow").innerHTML;
+	socket.emit('checkNick', {nick: personToSend, iduniq: id});
+}
+
+socket.on('invitations', function (msg) {
+
+	console.log(msg);
+	invitations = msg;
+	document.getElementById("invitations").innerHTML="";
+	var counter = 0;
+	for(var m in invitations) {
+		if((invitations[m].nick==localPlayer.nick)&&(invitations[m].party!="")&&(invitations[m].party!=undefined)){
+			//(invitations[m].partyName==msg.partyName)
+			addInvitation(invitations[m].party);
+        }
+	}
+	//console.log(id, msg.iduniq);
+});
+
+socket.on('partyExists', function (msg) {
+	//console.log(id, msg.iduniq);
+	if(localPlayer.nick==msg.nick){
+		//console.log(id,msg.iduniq);
+		bootbox.alert('<div class="panel panel-danger">  <div class="panel-heading">    <h3 class="panel-title">Hello on GoodQuality.Mockup.</h3>  </div>  <div class="panel-body"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>  Party exists, try another name.</div></div></div>', function(result) {
+		  //Example.show("Confirm result: "+result);
+		}); 
+	}
+
+});
+
+socket.on('partyDontExists', function (msg) {
+	//console.log(id, msg.iduniq);
+	if(localPlayer.nick==msg.nick){
+		//console.log(id,msg.iduniq);
+		localPlayer.party=msg.partyName;
+		emitPlayer();
+	}
+
+});
+
+var czyDobryNick = new Boolean (false);
+
+socket.on('goodNick', function (msg) {
+	//console.log(id, msg.iduniq);
+	if(id==msg.iduniq){
+		//console.log(id,msg.iduniq);
+		localPlayer.nick = msg.nick;
+		czyDobryNick=true;
+		socket.emit('newPlayer', localPlayer);
+		//StartGame();
+	}
+});
+
+socket.on('badNick', function (msg) {
+	//console.log(id,msg.iduniq);
+	if(id==msg.iduniq){
+
+	}
+});
+
+
+socket.on('stats', function (msg) {
+	document.getElementById("odKiedyUp").innerHTML=msg.odKiedyUp;
+	document.getElementById("playersAmount").innerHTML=msg.playersAmount;
+	document.getElementById("rekord").innerHTML=msg.rekord;
+});
+
+socket.on('vipsToSave', function (msg) {
+	console.log(msg.vips);
+	vips=msg;
+});
+
+function StartGame(){
+	init();
+	animate();
+  bootbox.alert('<div class="panel panel-info">  <div class="panel-heading">    <h3 class="panel-title">Hello on mockup.</h3>  </div>  <div class="panel-body"><div class="alert alert-info" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Info:</span>Use wsad for moving, left click for attack, right for teleport. To send private message type: "*nick, message", for team message type:"# message". Check party bookmark in tools for invitations. If you want to invite, create party first. Cant use mouse if 0 hp. Get red square for refill. To change attack type go to stats bookmark in tools or use "1", "2" or "3". Below HP bar are cooldown bars (for attack and teleport, they work different - you can fill teleport bar by holding right mouse button). Stats:aAmmount and radius are for attacks, STR for strength of damage ,SPD for moving speed, DEX for reducing taken damage.</div></div></div> ', function(result) {});
+}
+
+socket.on('players', function (msg) {
+	allPlayers = msg;
+});
+
+socket.on('newPlayerExisted', function (msg) {
+	//console.log(msg);
+	if(msg.nick==localPlayer.nick){
+		localPlayer = msg;
+		localPlayer.party = "";
+		localPlayer.bonus = "n";
+		localPlayer.bonusToShow = "n"; 
+		emitPlayer();
+	}
+	if(czyDobryNick==true){
+		StartGame();
+	}
+});
+
+socket.on('parties', function (msg) {
+	Parties = msg;
+});
+
+socket.on('circleToSave', function (msg) {
+	var czasStartu = new Date();
+    var czasWystartowania= czasStartu.getTime();
+    //'circleToSave', {r: Circles[k].r, x: Circles[k].x, y: Circles[k].y, color: Circles[k].color})
+	var key=msg.r+msg.x+msg.y+msg.color;
+    Circles[key] = {r: Number(msg.r), x: msg.x, y: msg.y, color: msg.color,czasStartu: czasWystartowania};
+    //console.log(Circles[key]);
+});
+//clearTimeout(timeoutId);
+socket.on('dmgToShow', function (msg) {
+	//console.log(msg.dmg, msg.x,msg.y);
+	var czasStartu = new Date();
+    var czasWystartowania= czasStartu.getTime();
+    //'circleToSave', {r: Circles[k].r, x: Circles[k].x, y: Circles[k].y, color: Circles[k].color})
+	var key=msg.dmg+msg.x+msg.y;
+    Damage[key] = {dmg: msg.dmg, x: msg.x, y: msg.y,czasStartu: czasWystartowania};
+    //console.log(Circles[key]);
+});
+
+socket.on('bonus', function (msg) {
+	//console.log(msg);
+	Bonus = msg;
+    //console.log(Circles[key]);
+});
+
+var timeoutIdWarning;
+
+function timeoutIdWarningFunction(){
+	promptedWarning=false;
+}
+
+socket.on('warning', function (msg) {
+	//console.log(msg);
+	if(msg.nick==localPlayer.nick&&promptedWarning==false){
+		promptedWarning=true;
+		timeoutIdWarning = setTimeout(timeoutIdWarningFunction, 10000);
+
+		bootbox.confirm('<div class="panel panel-danger">  <div class="panel-heading">    <h3 class="panel-title">Hello on GoodQuality.Mockup.</h3>  </div>  <div class="panel-body"><div class="alert alert-danger" role="alert"><span class="glyphicon glyphicon-exclamation-sign" aria-hidden="true"></span><span class="sr-only">Error:</span>    Too long without player action or server error. Would you be willing to start afresh? 			</div></div></div><div class="alert alert-info" role="alert">For properly working M, C, P, K, T shortcuts and special attacks please refresh site after this error.</div>    ', function(result) {
+				if(result==true){
+					promptedWarning=false;
+					if(localPlayer.nick!=null){
+			    		//init();
+			    		
+			    		wyslijLogin();
+					}else{
+						//promptedWarning=false;
+					}
+				}
+		  //Example.show("Confirm result: "+result);
+		}); 
+	}
+});
+socket.on('playersFromDb', function(msg){
+	document.getElementById("players").innerHTML="";
+	console.log(msg);
+	var objectToModify = msg;
+	//sprawdz status
+	var foo = document.getElementById("players");
+    //Append the element in page (in span).  
+    
+	
+    for(var m in objectToModify) {
+    	var label = document.createElement("div");
+    	label.innerHTML =objectToModify[m].nick+"<br>";
+    	label.style.backgroundColor = objectToModify[m].color;
+    	//label.style.color = "red";
+    	var element = document.createElement("div");
+    	element.style.backgroundColor = objectToModify[m].color;
+    	element.style.color = "red";
+		label.style.color = "red";
+    			//element.style.color = objectToModify[m].color;
+    	for(var k in allPlayers) {
+    		if(k!=localPlayer.nick){
+    			if(objectToModify[m]!=null&&objectToModify[m]!=undefined&&allPlayers[k]!=null&&allPlayers[k]!=undefined){
+    				if(objectToModify[m].nick==allPlayers[k].nick){
+			            element.style.color = "green";
+			            label.style.color = "green";
+					}
+    			}
+    			
+    	
+			}
+		}
+		element.innerHTML = "A: "+objectToModify[m].lvla+", B: "+objectToModify[m].lvlb+", C: "+objectToModify[m].lvlc;
+    	foo.appendChild(label);
+    	foo.appendChild(element);
+	}
+});
+socket.on('chatMessages', function (msg) {
+	document.getElementById("wiadomosci").innerHTML="";
+	//console.log(msg.data);
+	var czyPierwszyRazB=true;
+	var licznik = 0;
+  	msg.data.forEach(function(object) {
+ 	 if(msg.data[licznik]!=null&&msg.data[licznik]!=undefined&&localPlayer!=undefined){
+  		if(czyPierwszyRazB){
+			czyPierwszyRazB = false;
+			document.getElementById("wiadomosci").innerHTML=null;
+
+			var endNick = msg.data[licznik].indexOf("said:")-1;
+			var sender = msg.data[licznik].substring(0,endNick);
+			var position = msg.data[licznik].indexOf(":");
+
+			var flagParty = new Boolean (false);
+			var flagPrivate = new Boolean (false);
+			var party = "";
+			var nick = "";
+			switch (msg.data[licznik].substring(position+2,position+3)){
+                case "#":
+                    var end = msg.data[licznik].indexOf(",");
+                    party = msg.data[licznik].substring(position+3,end);
+                    //console.log("p", party, sender);
+                    flagParty=true;
+                break;
+                case "*":
+                    var end = msg.data[licznik].indexOf(",");
+                    nick = msg.data[licznik].substring(position+3,end);
+                    //console.log("n", nick, sender);
+                    flagPrivate=true;
+                break;
+                default:
+
+                break;
+            }
+
+            if(flagPrivate==true){
+            	if((localPlayer.nick==nick)||(localPlayer.nick==sender)){
+            		document.getElementById("wiadomosci").innerHTML="<font color=\"green\">"+msg.data[licznik]+"</font>";
+            		licznik++;
+            	}else{
+            		licznik++;
+            	}
+            }
+            if(flagParty==true){
+            	if((localPlayer.nick==nick)||(localPlayer.nick==sender)){
+            		document.getElementById("wiadomosci").innerHTML="<font color=\"blue\">"+msg.data[licznik]+"</font>";
+            		licznik++;
+            	}else{
+            		licznik++;
+            	}
+            }
+            
+            if((flagParty==false)&&(flagPrivate==false)){
+            	document.getElementById("wiadomosci").innerHTML=msg.data[licznik];
+            	licznik++;
+            }else{
+
+            }
+         }else{
+			//document.getElementById("wiadomosci").innerHTML=document.getElementById("wiadomosci").innerHTML+"<br/>"+msg.data[licznik];
+
+
+			var endNick = msg.data[licznik].indexOf("said:")-1;
+			var sender = msg.data[licznik].substring(0,endNick);
+			var position = msg.data[licznik].indexOf(":");
+
+			var flagParty = new Boolean (false);
+			var flagPrivate = new Boolean (false);
+			var party = "";
+			var nick = "";
+			switch (msg.data[licznik].substring(position+2,position+3)){
+                case "#":
+                    var end = msg.data[licznik].indexOf(",");
+                    party = msg.data[licznik].substring(position+3,end);
+                    //console.log("p", party, sender);
+                    flagParty=true;
+                break;
+                case "*":
+                    var end = msg.data[licznik].indexOf(",");
+                    nick = msg.data[licznik].substring(position+3,end);
+                    //console.log("n", nick, sender);
+                    flagPrivate=true;
+                break;
+                default:
+
+                break;
+            }
+
+            if(flagPrivate==true){
+            	if((localPlayer.nick==nick)||(localPlayer.nick==sender)){
+            		document.getElementById("wiadomosci").innerHTML=document.getElementById("wiadomosci").innerHTML+"<br/>"+"<font color=\"blue\">"+msg.data[licznik]+"</font>";
+            		licznik++;
+            	}else{
+            		licznik++;
+            	}
+            }
+            if(flagParty==true){
+            	if((localPlayer.party==party)||(localPlayer.nick==sender)){
+            		document.getElementById("wiadomosci").innerHTML=document.getElementById("wiadomosci").innerHTML+"<br/>"+"<font color=\"black\">"+msg.data[licznik]+"</font>";
+            		licznik++;
+            	}else{
+            		licznik++;
+            	}
+            }
+            
+            if((flagParty==false)&&(flagPrivate==false)){
+            	document.getElementById("wiadomosci").innerHTML=document.getElementById("wiadomosci").innerHTML+"<br/>"+msg.data[licznik];
+            	licznik++;
+            }
+          }
+        }
+    });
+    var elem = document.getElementById('wiadomosci');
+  	elem.scrollTop = elem.scrollHeight;
+});
+
+function sendChatMessage (){
+	var msg = document.getElementById("msgInput").value;
+	document.getElementById("msgInput").value="";
+	var checkFirst = msg.substring(0,1);
+	var msgToSend = msg;
+	if(checkFirst=="#"&&localPlayer.party!=""){
+		msgToSend = "#"+localPlayer.party+", "+msg.substring(1);
+	}
+	if(checkFirst=="#"&&localPlayer.party==""){
+		msgToSend = msg.substring(1);
+	}
+	if (msgToSend!=null&&msgToSend!=""){
+		socket.emit('chatMessage', {nick: localPlayer.nick, message: msgToSend});
+	}
+}
+
+function attack(){
+	emitPlayer();
+
+	var xToSend = 0;
+	var yToSend = 0;
+	var element = canvasViewPort;
+  	var offsetX = 0, offsetY = 0;
+    if (element.offsetParent) {
+     	do {
+       		offsetX += element.offsetLeft;
+       		offsetY += element.offsetTop;
+      	} while ((element = element.offsetParent));
+    }
+    x = xAtt - offsetX;
+    y = yAtt - offsetY;
+    xToSend = localPlayer.x + (x-widthViewPort/2);
+    yToSend = localPlayer.y + (y-heightViewPort/2);
+
+    var lvlToSend = 0;
+	var silaToSend = 0;
+	var iloscToSend = 0;
+	var rToSend = 0;
+
+	var typeAttack = 1;
+	if(document.getElementById("att3").checked==true){
+		typeAttack=3;
+		switch(localPlayer.klasa){
+			case "a":
+				lvlToSend = localPlayer.lvla;
+				silaToSend = localPlayer.sta;
+				iloscToSend = localPlayer.a3a;
+				rToSend = localPlayer.r3a;
+			break;
+			case "b":
+				lvlToSend = localPlayer.lvlb;
+				silaToSend = localPlayer.stb;
+				iloscToSend = localPlayer.a3b;
+				rToSend = localPlayer.r3b;
+			break;
+			case "c":
+				lvlToSend = localPlayer.lvlc;
+				silaToSend = localPlayer.stc;
+				iloscToSend = localPlayer.a3c;
+				rToSend = localPlayer.r3c;
+			break;
+		}
+	}
+	if(document.getElementById("att2").checked==true){
+		typeAttack=2;
+		switch(localPlayer.klasa){
+			case "a":
+				lvlToSend = localPlayer.lvla;
+				silaToSend = localPlayer.sta;
+				iloscToSend = localPlayer.a2a;
+				rToSend = localPlayer.r2a;
+			break;
+			case "b":
+				lvlToSend = localPlayer.lvlb;
+				silaToSend = localPlayer.stb;
+				iloscToSend = localPlayer.a2b;
+				rToSend = localPlayer.r2b;
+			break;
+			case "c":
+				lvlToSend = localPlayer.lvlc;
+				silaToSend = localPlayer.stc;
+				iloscToSend = localPlayer.a2c;
+				rToSend = localPlayer.r2c;
+			break;
+		}
+	}
+	if(document.getElementById("att1").checked==true){
+		typeAttack=1;
+		switch(localPlayer.klasa){
+			case "a":
+				lvlToSend = localPlayer.lvla;
+				silaToSend = localPlayer.sta;
+				iloscToSend = localPlayer.a1a;
+				rToSend = localPlayer.r1a;
+			break;
+			case "b":
+				lvlToSend = localPlayer.lvlb;
+				silaToSend = localPlayer.stb;
+				iloscToSend = localPlayer.a1b;
+				rToSend = localPlayer.r1b;
+			break;
+			case "c":
+				lvlToSend = localPlayer.lvlc;
+				silaToSend = localPlayer.stc;
+				iloscToSend = localPlayer.a1c;
+				rToSend = localPlayer.r1c;
+			break;
+		}
+	}
+
+	
+	
+	
+
+    socket.emit('circle', {nick: localPlayer.nick, lvl: lvlToSend, x: localPlayer.x, y: localPlayer.y, color: localPlayer.color, sila: silaToSend, ilosc: iloscToSend, r: rToSend, hp: localPlayer.hp, xAtt: xToSend, yAtt: yToSend, typeAttack: typeAttack});
+}
+
+function statsChanges(id){
+	console.log(id);
+	//c = c.substring(0, c.length - 1);
+	var statystyka = id.substring(0, 1);
+	//r-promien
+	//a-ilosc
+	//s-sila
+	//d-zrecznosc
+	//p-predkosc
+	var typ = id.substring(1, 2);
+	//1-3 - typ ataku jezeli statystyka = a||r
+	var klasa = id.substring(2, 3);
+	//a-c - klasa postaci
+	var plusCzyMinus = id.substring(4, 5);
+
+	var skillPointsA = parseInt(parseInt(localPlayer.lvla-(localPlayer.r1a+localPlayer.a1a+localPlayer.r2a+localPlayer.a2a+localPlayer.r3a+localPlayer.a3a))+parseInt(59));
+	var skillPointsB = parseInt(parseInt(localPlayer.lvlb-(localPlayer.r1b+localPlayer.a1b+localPlayer.r2b+localPlayer.a2b+localPlayer.r3b+localPlayer.a3b))+parseInt(59));
+	var skillPointsC = parseInt(parseInt(localPlayer.lvlc-(localPlayer.r1c+localPlayer.a1c+localPlayer.r2c+localPlayer.a2c+localPlayer.r3c+localPlayer.a3c))+parseInt(59));
+
+	var statsPointsA = parseInt(parseInt(localPlayer.lvla-(localPlayer.sta+localPlayer.dea+localPlayer.pda))+parseInt(29)); 
+	var statsPointsB = parseInt(parseInt(localPlayer.lvlb-(localPlayer.stb+localPlayer.deb+localPlayer.pdb))+parseInt(29)); 
+	var statsPointsC = parseInt(parseInt(localPlayer.lvlc-(localPlayer.stc+localPlayer.dec+localPlayer.pdc))+parseInt(29)); 
+	
+	var klucz = ""+statystyka + typ + klasa;
+	switch (klasa){
+		case "a":
+			if((statystyka=="r")||(statystyka=="a")){
+				if(plusCzyMinus=="p"){
+					if(skillPointsA>0){
+						localPlayer[klucz]++;
+						skillPointsA--;
+					}
+				}else{
+					if(localPlayer[klucz]>1){
+						localPlayer[klucz]--;
+						skillPointsA++;
+					}
+				}
+			}else{
+				if(plusCzyMinus=="p"){
+					if(statsPointsA>0){
+						localPlayer[klucz]++;
+						statsPointsA--;
+					}
+				}else{
+					if(localPlayer[klucz]>1){
+						localPlayer[klucz]--;
+						statsPointsA++;
+					}
+				}
+			}
+		break;
+		case "b":
+			if((statystyka=="r")||(statystyka=="a")){
+				if(plusCzyMinus=="p"){
+					if(skillPointsB>0){
+						localPlayer[klucz]++;
+						skillPointsB--;
+					}
+				}else{
+					if(localPlayer[klucz]>1){
+						localPlayer[klucz]--;
+						skillPointsB++;
+					}
+				}
+			}else{
+				if(plusCzyMinus=="p"){
+					if(statsPointsB>0){
+						localPlayer[klucz]++;
+						statsPointsB--;
+					}
+				}else{
+					if(localPlayer[klucz]>1){
+						localPlayer[klucz]--;
+						statsPointsB++;
+					}
+				}
+			}
+		break;
+		case "c":
+			if((statystyka=="r")||(statystyka=="a")){
+				if(plusCzyMinus=="p"){
+					if(skillPointsC>0){
+						localPlayer[klucz]++;
+						skillPointsC--;
+					}
+				}else{
+					if(localPlayer[klucz]>1){
+						localPlayer[klucz]--;
+						skillPointsC++;
+					}
+				}
+			}else{
+				if(plusCzyMinus=="p"){
+					if(statsPointsC>0){
+						localPlayer[klucz]++;
+						statsPointsC--;
+					}
+				}else{
+					if(localPlayer[klucz]>1){
+						localPlayer[klucz]--;
+						statsPointsC++;
+					}
+				}
+			}
+		break;
+	}
+	var idDivaToshow = klucz +"ToShow";
+	document.getElementById("skillpointsToShowA").innerHTML= skillPointsA;
+	document.getElementById("skillpointsToShowB").innerHTML= skillPointsB;
+	document.getElementById("skillpointsToShowC").innerHTML= skillPointsC;
+	document.getElementById("statspointsToShowA").innerHTML= statsPointsA;
+	document.getElementById("statspointsToShowB").innerHTML= statsPointsB;
+	document.getElementById("statspointsToShowC").innerHTML= statsPointsC;
+	document.getElementById(idDivaToshow).innerHTML= localPlayer[klucz];
+}
+
+
+document.getElementById("tools").style.display="none";
+document.getElementById("stats").style.display="none";
+document.getElementById("shop").style.display="none";
+document.getElementById("up").style.display="none";
+document.getElementById("down").style.display="none";
+document.getElementById("left").style.display="none";
+document.getElementById("right").style.display="none";
+document.getElementById("party").style.display="none";
+function showTools(){
+	if(document.getElementById("tools").style.display=="none"){
+		document.getElementById("tools").style.display="block";
+		document.getElementById("stats").style.display="block";
+		document.getElementById("party").style.display="none";
+		document.getElementById("liStats").className ="active";
+		document.getElementById("liShop").className ="";
+		document.getElementById("liParty").className ="";
+/*
+		if(document.getElementById("chat").style.display=="none"&&document.getElementById("mapa").style.display=="none"){
+			document.getElementById("tools").style.width="100%";
+		}else{
+			document.getElementById("tools").style.width="85%";
+		}
+*/
+	}else{
+		document.getElementById("tools").style.display="none";
+		document.getElementById("stats").style.display="none";
+		document.getElementById("shop").style.display="none";
+		document.getElementById("party").style.display="none";
+	}
+}	
+
+function showChat(){
+	if(document.getElementById("chat").style.display=="none"){
+		document.getElementById("chat").style.display="block";
+	}else{
+		document.getElementById("chat").style.display="none";
+	}
+
+	if(document.getElementById("chat").style.display=="none"&&document.getElementById("up").style.display=="block"){
+		document.getElementById("up").style.position="absolute" 
+		document.getElementById("up").style.bottom="17%";
+		document.getElementById("down").style.position="absolute" 
+		document.getElementById("down").style.bottom="2%";
+		document.getElementById("left").style.position="absolute" 
+		document.getElementById("left").style.bottom="2%";
+		document.getElementById("right").style.position="absolute" 
+		document.getElementById("right").style.bottom="2%";
+	}
+	if(document.getElementById("chat").style.display=="block"&&document.getElementById("up").style.display=="block"){
+			document.getElementById("up").style.position="absolute" 
+			document.getElementById("up").style.bottom="36%";
+			document.getElementById("down").style.position="absolute" 
+			document.getElementById("down").style.bottom="21%";
+			document.getElementById("left").style.position="absolute" 
+			document.getElementById("left").style.bottom="21%";
+			document.getElementById("right").style.position="absolute" 
+			document.getElementById("right").style.bottom="21%";
+	}
+}
+
+function showMinimap(){
+	if(document.getElementById("mapa").style.display=="none"){
+		document.getElementById("mapa").style.display="block";
+	}else{
+		document.getElementById("mapa").style.display="none";
+	}
+}
+
+function showShop(){
+	if(document.getElementById("shop").style.display=="none"){
+		document.getElementById("stats").style.display="none";
+		document.getElementById("shop").style.display="block";
+		document.getElementById("party").style.display="none";
+		document.getElementById("liShop").className ="active";
+		document.getElementById("liStats").className ="";
+		document.getElementById("liParty").className ="";
+		document.getElementById("players").style.display="none";
+		document.getElementById("liPlayers").className ="";
+	}
+}
+
+function showStats(){
+	if(document.getElementById("stats").style.display=="none"){
+		document.getElementById("stats").style.display="block";
+		document.getElementById("liStats").className ="active";
+		document.getElementById("party").style.display="none";
+		document.getElementById("liShop").className ="";
+		document.getElementById("liParty").className ="";
+		document.getElementById("shop").style.display="none";
+		document.getElementById("players").style.display="none";
+		document.getElementById("liPlayers").className ="";
+	}
+}
+function showPlayers(){
+	if(document.getElementById("players").style.display=="none"){
+		document.getElementById("stats").style.display="none";
+		document.getElementById("liPlayers").className ="active";
+		document.getElementById("party").style.display="none";
+		document.getElementById("liStats").className ="";
+		document.getElementById("liShop").className ="";
+		document.getElementById("liParty").className ="";
+		document.getElementById("shop").style.display="none";
+		document.getElementById("players").style.display="block";
+	}
+	socket.emit('getPlayersFromDB');
+}
+
+function showParty(){
+	if(document.getElementById("party").style.display=="none"){
+		document.getElementById("players").style.display="none";
+		document.getElementById("stats").style.display="none";
+		document.getElementById("liStats").className ="";
+		document.getElementById("party").style.display="block";
+		document.getElementById("liShop").className ="";
+		document.getElementById("shop").style.display="none";
+		document.getElementById("liParty").className ="active";
+		document.getElementById("liPlayers").className ="";
+	}
+}
+
+function showArrows(){
+
+
+
+	if(document.getElementById("up").style.display=="none"){
+		document.getElementById("up").style.display="block";
+		document.getElementById("down").style.display="block";
+		document.getElementById("left").style.display="block";
+		document.getElementById("right").style.display="block";
+
+
+		if(document.getElementById("chat").style.display=="none"){
+			//console.log("a");
+			document.getElementById("up").style.position="absolute" 
+			document.getElementById("up").style.bottom="17%";
+			document.getElementById("down").style.position="absolute" 
+			document.getElementById("down").style.bottom="2%";
+			document.getElementById("left").style.position="absolute" 
+			document.getElementById("left").style.bottom="2%";
+			document.getElementById("right").style.position="absolute" 
+			document.getElementById("right").style.bottom="2%";
+		}else{
+			document.getElementById("up").style.position="absolute" 
+			document.getElementById("up").style.bottom="36%";
+			document.getElementById("down").style.position="absolute" 
+			document.getElementById("down").style.bottom="21%";
+			document.getElementById("left").style.position="absolute" 
+			document.getElementById("left").style.bottom="21%";
+			document.getElementById("right").style.position="absolute" 
+			document.getElementById("right").style.bottom="21%";
+		}
+	}else{
+		document.getElementById("up").style.display="none";
+		document.getElementById("down").style.display="none";
+		document.getElementById("left").style.display="none";
+		document.getElementById("right").style.display="none";
+	}
+}
+
+</script>
+</body>
+</html>
+
